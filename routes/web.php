@@ -13,6 +13,7 @@ use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RekapanController;
 use App\Http\Controllers\RiwayatController;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -66,6 +67,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/admin/gaji', [GajiiController::class, 'gaji'])->name('admin.gaji');
 
+    Route::get('/admin/gaji/cetak', [GajiiController::class, 'cetakPDF'])->name('admin.gaji.cetak.all');
+Route::get('/admin/gaji/cetak/{id}', [GajiiController::class, 'cetakPerKaryawan'])->name('admin.gaji.cetak.karyawan');
+
     //Route::get('/admin/gaji', [GajiiController::class, 'index'])->name('admin.gaji');
     //Route::get('/admin/gaji', [LaporanController::class, 'laporanGaji'])->name('admin.gaji');
 
@@ -103,6 +107,11 @@ Route::middleware(['auth', 'karyawan'])->group(function () {
 
          Route::get('/karyawan/izin',[IzinController::class,'index'])->name('karyawan.izin'); 
          Route::post('/karyawan/izin',[IzinController::class,'store'])->name('karyawan.izin'); 
+
+          Route::get('/profil',[ProfileController::class,'index'])->name('karyawan.profil'); 
+          Route::get('/profil/edit',[ProfileController::class,'edit'])->name('karyawan.profil.edit'); 
+            Route::put('/profil/update',[ProfileController::class,'update'])->name('karyawan.profil.update'); 
+
 
          //edit dan hapus pada halaman tambah data karyawan 
          

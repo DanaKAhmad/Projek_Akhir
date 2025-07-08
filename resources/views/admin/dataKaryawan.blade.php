@@ -1,7 +1,11 @@
 @extends('layouts.template')
 
 @section('content')
-
+<div class="app-content-header py-3 mb-4 border-bottom">
+    <div class="container-fluid">
+        <h3 class="mb-0 fw-bold">Data Karyawan</h3>
+    </div>
+</div>
 
 @push('scripts')
     @if(session('success'))
@@ -17,12 +21,9 @@
     @endif
 @endpush
 
-
-
-
 <div class="card mb-4">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <span>Tambah Karyawan</span>
+       
         <button class="btn btn-success" onclick="toggleForm()">Tambah Karyawan</button>
     </div>
 
@@ -77,11 +78,6 @@
     </div>
 </div>
 
-
-
-
-
-
 {{-- Tabel Daftar Karyawan --}}
 <div class="card">
     <div class="card-header">Daftar Karyawan</div>
@@ -111,7 +107,7 @@
                         <td>{{ $karyawan->user->tanggal_lahir ?? '-' }}</td>
                         <td>{{ $karyawan->user->alamat ?? '-' }}</td>
                         <td>{{ $karyawan->tanggal_masuk }}</td>
-                         <td>{{ $karyawan->status }}</td>
+                        <td>{{ $karyawan->status }}</td>
 
                         <td>
                             <a href="{{ route('admin.dataKaryawan.edit', $karyawan->id) }}" class="btn btn-sm btn-warning">Edit</a>

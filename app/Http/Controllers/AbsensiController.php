@@ -22,8 +22,6 @@ class AbsensiController extends Controller
             ->get();
         return view('karyawan.absensi', compact('absenMasuk', 'absenPulang', 'absensi_terakhir'));
     }
-    
-
     //baru di tmba
     function hitungJarak($lat1, $lon1, $lat2, $lon2)
     {   
@@ -95,9 +93,7 @@ class AbsensiController extends Controller
         // return redirect()->route('account.absensi')->with('error', 'Anda berada di luar area absensi (' . round($jarak) . ' meter dari toko).');
          return redirect()->route('karyawan.riwayat')->with('error', 'Anda berada di luar area absensi (' . round($jarak) . ' meter dari kantor).');
     }
-
-
-    // BARU DI TAMBA
+ // BARU DI TAMBA
     $tanggalMasuk = Carbon::parse($karyawan->tanggal_masuk);
 $tanggalHariIni = Carbon::today();
 
@@ -105,16 +101,11 @@ $tanggalHariIni = Carbon::today();
 if ($tanggalHariIni->lt($tanggalMasuk)) {
     return redirect()->route('karyawan.riwayat')->with('error', 'Anda belum mulai bekerja. Tanggal mulai kerja Anda adalah ' . $tanggalMasuk->format('Y-m-d'));
 }
+// Cek apakah hari ini adalah hari libur (Senin)
+if (Carbon::now()->isTuesday()) {
+    return redirect()->route('karyawan.riwayat')->with('error', 'Hari ini adalah hari libur. Absensi tidak diperbolehkan.');
+}
 
-    
-    
-
-
-
-
-
-
-        
     $jamkerja = Jamkerja::first(); 
     //$jamSekarang = Carbon::now();
     $jamSekarang = Carbon::parse($request->jam); // ← GANTI INI
@@ -204,9 +195,7 @@ if ($tanggalHariIni->lt($tanggalMasuk)) {
     //session(['absen' => $absensData]);
     session(['absen' . ucfirst($request->tipe) => $absensData]);
     return redirect()->route('karyawan.riwayat')->with('success', 'Absensi berhasil disimpan!');
-    
-}
-
+    }
     public function riwayat()
     {
         $loggedInId = Auth::id();

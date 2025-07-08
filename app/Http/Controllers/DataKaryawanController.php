@@ -19,10 +19,8 @@ class DataKaryawanController extends Controller
     return view('admin.dataKaryawan', compact('karyawans'));
     }
 
-
     public function store(Request $request)
 {
-    
 
     $request->validate([
         'name' => 'required|string|max:255',
@@ -49,8 +47,6 @@ class DataKaryawanController extends Controller
         'tanggal_masuk' => $request->tanggal_masuk,
         'role' => 'karyawan'
     ]);
-
-    // 2. Buat data karyawan dan hubungkan ke user
     // Simpan ke tabel karyawans, hubungkan ke user_id
     Karyawan::create([
         'user_id' => $user->id,
@@ -61,7 +57,8 @@ class DataKaryawanController extends Controller
         'tanggal_lahir' => $user->tanggal_lahir,
         'alamat' => $user->alamat,
         'tanggal_masuk' => $user->tanggal_masuk,
-        'status' => $user->status,
+        //'status' => $user->status,
+        'status' => 'aktif', 
     ]);
     return redirect()->route('admin.dataKaryawan')->with('success', 'Karyawan berhasil ditambahkan!');
 
@@ -119,13 +116,13 @@ class DataKaryawanController extends Controller
 
     // Update karyawan
     $karyawan->update([
-        'name' => $request->name,
-        'email' => $request->email,
-        'no_telp' => $request->no_telp,
-        'jenis_kelamin' => $request->jenis_kelamin,
-        'tanggal_lahir' => $request->tanggal_lahir,
-        'alamat' => $request->alamat,
-        'tanggal_masuk' => $request->tanggal_masuk,
+        'name' => $user->name,
+        'email' => $user->email,
+        'no_telp' => $user->no_telp,
+        'jenis_kelamin' => $user->jenis_kelamin,
+        'tanggal_lahir' => $user->tanggal_lahir,
+        'alamat' => $user->alamat,
+        'tanggal_masuk' => $user->tanggal_masuk,
         'status' => 'aktif', 
     ]);
       \Log::info("Status setelah update: " . $karyawan->status);

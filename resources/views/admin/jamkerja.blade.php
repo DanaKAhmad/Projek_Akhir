@@ -2,12 +2,11 @@
 
 
 @section('content')
-
-    <div class="card">
-    <div class="card-header">
-        <h3 class="card-title">Jam Kerja</h3>
+<div class="app-content-header py-3 mb-4 border-bottom">
+    <div class="container-fluid">
+        <h3 class="mb-0 fw-bold">Jam Kerja</h3>
     </div>
-    <div class="card-body">
+</div>
 
      <div class="container" >
       

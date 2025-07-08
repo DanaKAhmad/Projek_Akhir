@@ -9,12 +9,20 @@ use Illuminate\Support\Facades\Auth;
 class IzinController extends Controller
 {
     //
-      public function index(){
-       // return view('izin');
+public function index()
+{
+    $user = Auth::user();
 
-   $izin = Izin::all();
-   return view('karyawan.izin',compact('izin'));
+    if (!$user->karyawan) {
+        return redirect()->back()->with('error', 'Data karyawan tidak ditemukan untuk user ini.');
     }
+
+    $karyawan = $user->karyawan;
+
+    $izin = Izin::where('karyawan_id', $karyawan->id)->get();
+
+    return view('karyawan.izin', compact('izin'));
+}
 
     public function store(Request $request){
         //  $karyawanId = Auth::id();
@@ -28,9 +36,7 @@ class IzinController extends Controller
             'tanggal_berakhir_izin' => 'required|date',
             'keterangan' => 'required|string',
             'lampiran' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
-
-             
-        ]);
+    ]);
 
         $lampiranPath = null;
 
@@ -38,8 +44,6 @@ class IzinController extends Controller
         $lampiranPath = $request->file('lampiran')->store('lampiran', 'public');
     }
 
-
-    
         Izin::create([
             'karyawan_id' => $karyawan->id,
             'name' => $karyawan->name,
@@ -47,8 +51,8 @@ class IzinController extends Controller
             'tanggal_izin' =>$request ->tanggal_izin,
             'tanggal_berakhir_izin' =>$request ->tanggal_berakhir_izin,
             'keterangan' =>$request ->keterangan,
-               'status' => 'pending', //br
-               'lampiran' => $lampiranPath,
+            'status' => 'pending', //br
+            'lampiran' => $lampiranPath,
             
         ]);
         return redirect()->back()->with('success','Data berhasil di simpan.');

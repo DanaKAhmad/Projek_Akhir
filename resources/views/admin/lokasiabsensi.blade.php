@@ -1,13 +1,13 @@
 @extends('layouts.template')
 
 @section('content')
-<div class="card">
-    <div class="card-header">
-        <h3 class="card-title">Lokasi</h3>
+<div class="app-content-header py-3 mb-4 border-bottom">
+    <div class="container-fluid">
+        <h3 class="mb-0 fw-bold">Lokasi Absensi</h3>
     </div>
-    <div class="card-body">
+</div>
         <div class="container">
-            <h2>Lokasi Absensi</h2>
+
 
             @if(session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
