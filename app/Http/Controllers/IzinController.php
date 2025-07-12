@@ -19,10 +19,16 @@ public function index()
 
     $karyawan = $user->karyawan;
 
+    // Cegah akses jika belum punya tanggal_masuk atau belum aktif
+    if (!$karyawan->tanggal_masuk || \Carbon\Carbon::parse($karyawan->tanggal_masuk)->gt(\Carbon\Carbon::today())) {
+        return redirect()->route('karyawan.profil')->with('error', 'Akun Anda belum diaktifkan atau belum mulai bekerja.');
+    }
+
     $izin = Izin::where('karyawan_id', $karyawan->id)->get();
 
     return view('karyawan.izin', compact('izin'));
 }
+
 
     public function store(Request $request){
         //  $karyawanId = Auth::id();

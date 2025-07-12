@@ -183,13 +183,14 @@
             <p>Gaji Karyawan</p>
         </a>
     </li>
-
+{{--
     <li class="nav-item">
         <a href="{{ route('admin.laporan') }}" class="nav-link {{ request()->routeIs('admin.laporan') ? 'active' : '' }}">
             <i class="nav-icon bi bi-file-earmark-text"></i>
             <p>Laporan</p>
         </a>
     </li>
+    --}}
 
     <li class="nav-item">
         <a href="{{ route('admin.dataKaryawan') }}" class="nav-link {{ request()->routeIs('admin.dataKaryawan') ? 'active' : '' }}">

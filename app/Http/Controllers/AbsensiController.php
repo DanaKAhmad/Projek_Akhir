@@ -13,6 +13,13 @@ class AbsensiController extends Controller
 {
     public function index()
     {
+         $user = Auth::user();
+    $karyawan = $user->karyawan;
+
+    // Jika karyawan belum disetujui atau belum memiliki tanggal_masuk
+    if (!$karyawan || !$karyawan->tanggal_masuk || Carbon::parse($karyawan->tanggal_masuk)->gt(Carbon::today())) {
+        return redirect()->route('karyawan.profil')->with('error', 'Anda belum mulai bekerja atau belum disetujui oleh admin.');
+    }
         $absenMasuk = session('absenMasuk');
         $absenPulang = session('absenPulang');
 

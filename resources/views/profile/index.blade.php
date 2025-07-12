@@ -1,11 +1,12 @@
 @extends('layouts.templatekaryawan')
 @section('content')
 
+            
 
-<div class="container mt-4">
-    <h3 class="mb-4"><i class="fas fa-user-circle"></i> Profil Karyawan</h3>
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+<div class="card shadow-sm border-0 rounded-4">
+    <div class="card-header bg-white border-bottom">
+        <h3 class="mb-0 fw-bold">Profil Karyawan</h3>
+    </div>
 
             <div class="card shadow-lg border-0 rounded-4">
                 <div class="card-header bg-primary text-white rounded-top-4">
@@ -61,12 +62,19 @@
                         </div>
                     </div>
 
-                    <div class="mb-3 row">
-                        <label class="col-sm-4 fw-bold">Status</label>
-                        <div class="col-sm-8">
-                            <span class="badge bg-success">{{ ucfirst($karyawan->status) }}</span>
-                        </div>
-                    </div>
+                   <div class="mb-3 row">
+    <label class="col-sm-4 fw-bold">Status</label>
+    <div class="col-sm-8">
+        <span class="badge 
+            {{ 
+                $karyawan->status === 'aktif' ? 'bg-success' : 
+                ($karyawan->status === 'pending' ? 'bg-warning text-dark' : 'bg-danger') 
+            }}">
+            {{ ucfirst($karyawan->status) }}
+        </span>
+    </div>
+</div>
+
 
                 </div>
             </div>

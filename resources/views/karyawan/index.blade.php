@@ -12,9 +12,10 @@
         <p class="text-muted">Semoga harimu menyenangkan bersama Toko Dila!</p>
     </div>
 
-    <div class="row g-3 mb-4">
-        {{-- Status Akun --}}
-        <div class="col-md-6 col-lg-4">
+    <div class="row g-3 mb-4 justify-content-center text-center">
+    {{-- Kotak Status Akun --}}
+    <div class="col-md-6 col-lg-4">
+
             <div class="small-box shadow-sm 
                 {{ $statusKaryawan == 'aktif' ? 'bg-success' : ($statusKaryawan == 'pending' ? 'bg-warning' : 'bg-danger') }}" 
                 style="border-radius: 12px; min-height: 130px;">
@@ -36,29 +37,25 @@
                 </a>
             </div>
         </div>
-
-        {{-- Pengajuan Izin --}}
-        <div class="col-md-6 col-lg-4">
-            <div class="small-box bg-info shadow-sm" style="border-radius: 12px; min-height: 130px;">
-                <div class="inner">
-                    <h5 class="fw-bold text-white mb-2">Pengajuan Izin</h5>
-                    @if($izin->count())
-                        <p class="text-white mb-1">Ada <strong>{{ $izin->count() }}</strong> izin pending.</p>
-                    @else
-                        <p class="text-white mb-1">Tidak ada pengajuan izin baru.</p>
-                    @endif
-                </div>
-                <div class="icon">
-                    <i class="bi bi-calendar-check" style="font-size: 32px; color: rgba(255,255,255,0.9);"></i>
-                </div>
-                <a href="{{ route('karyawan.izin') }}" class="small-box-footer text-white text-decoration-none">
-                    Lihat Detail <i class="bi bi-arrow-right-circle"></i>
-                </a>
-            </div>
+{{-- Kotak Pengajuan Izin --}}
+<div class="col-xl-4 col-md-6">
+    <div class="small-box shadow-sm bg-primary" style="border-radius: 12px; min-height: 130px;">
+        <div class="inner">
+            <h5 class="fw-bold text-white mb-2">Pengajuan Izin</h5>
+            @if($izin->count())
+                <p class="text-white mb-1">Ada <strong>{{ $izin->count() }}</strong> izin pending.</p>
+            @else
+                <p class="text-white mb-1">Tidak ada pengajuan izin baru.</p>
+            @endif
         </div>
+        <div class="icon">
+            <i class="bi bi-calendar-check" style="font-size: 32px; color: rgba(255,255,255,0.9);"></i>
+        </div>
+        <a href="{{ route('karyawan.izin') }}" class="small-box-footer text-white text-decoration-none">
+            Lihat Detail <i class="bi bi-arrow-right-circle"></i>
+        </a>
     </div>
-
-    
+</div>
 
 
     {{-- Kalender Kehadiran --}}
