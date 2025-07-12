@@ -110,7 +110,7 @@ Route::middleware(['auth', 'karyawan'])->group(function () {
 
           Route::get('/profil',[ProfileController::class,'index'])->name('karyawan.profil'); 
           Route::get('/profil/edit',[ProfileController::class,'edit'])->name('karyawan.profil.edit'); 
-            Route::put('/profil/update',[ProfileController::class,'update'])->name('karyawan.profil.update'); 
+          Route::put('/profil/update',[ProfileController::class,'update'])->name('karyawan.profil.update'); 
 
 
          //edit dan hapus pada halaman tambah data karyawan 

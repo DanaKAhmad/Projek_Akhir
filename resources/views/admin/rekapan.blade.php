@@ -85,7 +85,7 @@
                             $statusText = $status;
                         }
                     @endphp
-                    <span class="badge {{ $statusClass }} fs-8 fw-semibold text-capitalize py-2 px-3">
+                    <span class="badge {{ $statusClass }} fs-7 fw-semibold text-capitalize py-2 px-3">
                         {{ $statusText }}
                     </span>
                 </td>

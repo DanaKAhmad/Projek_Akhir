@@ -137,7 +137,7 @@ class GajiiController extends Controller
         $gajiPokok = 2000000;
         $gajiHarian = 80000;
         $gajiKotor = $hadir * $gajiHarian;
-        $potongan = $alpha * 50000;
+        $potongan = $alpha * 80000;
         $gajiBersih = $gajiKotor - $potongan;
 
         return [

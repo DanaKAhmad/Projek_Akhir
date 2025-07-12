@@ -99,7 +99,7 @@
 
     function capturePhoto(tipe) {
         const hariIni = new Date().getDay(); // 1 = Senin
-        if (hariIni === 2) {
+        if (hariIni === 0) {
             Swal.fire({
                 icon: 'info',
                 title: 'Hari Libur',

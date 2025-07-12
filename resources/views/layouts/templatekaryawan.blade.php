@@ -166,68 +166,41 @@
                     <!--begin::Sidebar Menu-->
                     <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu"
                         data-accordion="false">
-                        <li class="nav-item menu-open"> 
-                              <a href="{{ route('karyawan.dashboard') }}" class="nav-link">
-                                <i class="nav-icon bi bi-speedometer"></i>
-                                <p>
-                                    Dashboard  karyawan
-                                   
-                                </p>
-                            </a>
-                            
-                            
-                        </li>
-                      
                         <li class="nav-item">
-                            <a href="{{ route('karyawan.absensi') }}" class="nav-link">
-                                
-                                  <i class="nav-icon bi bi-calendar-check"></i>
-                                <p>
-                                    Absen
-                                   
-                                   {{--}} <i class="nav-arrow bi bi-chevron-right"></i> --}}
-                                </p>
-                            </a>
-                          </li>
+    <a href="{{ route('karyawan.dashboard') }}" class="nav-link {{ request()->routeIs('karyawan.dashboard') ? 'active' : '' }}">
+        <i class="nav-icon bi bi-house"></i>
+        <p>Dashboard Karyawan</p>
+    </a>
+</li>
 
-                          <li class="nav-item">
-                            <a href="{{ route('karyawan.izin')}}" class="nav-link">
-                                <i class="nav-icon bi bi-file-earmark-text"></i>
-                                <p>
-                                    Aproval izin 
-                                   
-                                   {{--}} <i class="nav-arrow bi bi-chevron-right"></i> --}}
-                                </p>
-                            </a>
-                          </li>
-                           <li class="nav-item">
-                            <a href="{{ route('karyawan.riwayat') }}" class="nav-link">
-                                 <i class="nav-icon bi bi-clock-history"></i>
-                                <p>
-                                    Riwayat 
-                                   
-                                   {{--}} <i class="nav-arrow bi bi-chevron-right"></i> --}}
-                                </p>
-                            </a>
-                          </li>
-                           <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-clipboard-fill"></i>
-                                <p>
-                                    Profile
-                                   
-                                   {{--}} <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
-                            </a>
-                          </li>
+<li class="nav-item">
+    <a href="{{ route('karyawan.absensi') }}" class="nav-link {{ request()->routeIs('karyawan.absensi') ? 'active' : '' }}">
+        <i class="nav-icon bi bi-calendar-check"></i>
+        <p>Absen</p>
+    </a>
+</li>
 
+<li class="nav-item">
+    <a href="{{ route('karyawan.izin') }}" class="nav-link {{ request()->routeIs('karyawan.izin') ? 'active' : '' }}">
+        <i class="nav-icon bi bi-file-earmark-text"></i>
+        <p>Aproval Izin</p>
+    </a>
+</li>
 
+<li class="nav-item">
+    <a href="{{ route('karyawan.riwayat') }}" class="nav-link {{ request()->routeIs('karyawan.riwayat') ? 'active' : '' }}">
+        <i class="nav-icon bi bi-clock-history"></i>
+        <p>Riwayat</p>
+    </a>
+</li>
 
-                            
-
-                            
-                       
-                           
+<li class="nav-item">
+    <a href="{{ route('karyawan.profil') }}" class="nav-link {{ request()->routeIs('karyawan.profil') ? 'active' : '' }}">
+        <i class="nav-icon bi bi-clipboard-fill"></i>
+        <p>Profil</p>
+    </a>
+</li>
+   
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">

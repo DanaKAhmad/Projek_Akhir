@@ -101,8 +101,8 @@ $tanggalHariIni = Carbon::today();
 if ($tanggalHariIni->lt($tanggalMasuk)) {
     return redirect()->route('karyawan.riwayat')->with('error', 'Anda belum mulai bekerja. Tanggal mulai kerja Anda adalah ' . $tanggalMasuk->format('Y-m-d'));
 }
-// Cek apakah hari ini adalah hari libur (Senin)
-if (Carbon::now()->isTuesday()) {
+// Cek apakah hari ini adalah hari libur (Minggu)
+if (Carbon::now()->isSunday()) {
     return redirect()->route('karyawan.riwayat')->with('error', 'Hari ini adalah hari libur. Absensi tidak diperbolehkan.');
 }
 

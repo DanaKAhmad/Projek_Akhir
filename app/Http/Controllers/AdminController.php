@@ -84,7 +84,7 @@ public function index()
     }
 
     // Tambahkan ini:
-$statistik = [
+    $statistik = [
     'hadir' => array_sum($dataHadir),
     'izin' => array_sum($dataIzin),
     'alpha' => array_sum($dataAlpha),
