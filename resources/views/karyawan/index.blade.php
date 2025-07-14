@@ -101,7 +101,7 @@
         </div>
     </div>
 
-    {{-- Toko Dila --}}
+    {{-- Toko Dila 
     <div class="card mt-4 shadow-lg border-0">
         <img src="{{ asset('imgFoto/tokoDila.jpeg') }}" class="card-img-top rounded-top" alt="Foto Toko" style="max-height: 400px; object-fit: cover;">
 
@@ -124,4 +124,5 @@
         </div>
     </div>
 </div>
+--}}
 @endsection

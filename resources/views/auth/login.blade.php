@@ -1,4 +1,17 @@
-<x-guest-layout>
+<x-guest-layout :title="'Silahkan Login'"> 
+    @push('scripts')
+    @if(session('success'))
+    <script>
+        Swal.fire('Berhasil', '{{ session('success') }}', 'success');
+    </script>
+    @endif
+
+    @if(session('error'))
+    <script>
+        Swal.fire('Gagal', '{{ session('error') }}', 'error');
+    </script>
+    @endif
+@endpush
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -45,3 +58,4 @@
         </div>
     </form>
 </x-guest-layout>
+

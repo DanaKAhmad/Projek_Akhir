@@ -9,9 +9,19 @@
         <div class="container">
 
 
-            @if(session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
-            @endif
+          @push('scripts')
+    @if(session('success'))
+    <script>
+        Swal.fire('Berhasil', '{{ session('success') }}', 'success');
+    </script>
+    @endif
+
+    @if(session('error'))
+    <script>
+        Swal.fire('Gagal', '{{ session('error') }}', 'error');
+    </script>
+    @endif
+@endpush
 
             {{-- Form tambah lokasi --}}
             <form action="{{ route('admin.lokasiabsensi') }}" method="POST">

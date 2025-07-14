@@ -125,7 +125,7 @@ class DataKaryawanController extends Controller
         'tanggal_masuk' => $user->tanggal_masuk,
         'status' => 'aktif', 
     ]);
-      \Log::info("Status setelah update: " . $karyawan->status);
+      //\Log::info("Status setelah update: " . $karyawan->status);
 
     return redirect()->route('admin.dataKaryawan')->with('success', 'Data karyawan berhasil diperbarui.');
 }

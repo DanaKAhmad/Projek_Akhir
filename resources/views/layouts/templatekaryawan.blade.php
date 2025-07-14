@@ -684,6 +684,7 @@
         sparkline3.render();
     </script>
     <!--end::Script-->
+     @stack('scripts')
 </body>
 <!--end::Body-->
 

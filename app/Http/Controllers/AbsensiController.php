@@ -27,7 +27,18 @@ class AbsensiController extends Controller
         $absensi_terakhir = Absensi::where('karyawan_id', $karyawanId)
          ->orderBy('created_at', 'desc')
             ->get();
-        return view('karyawan.absensi', compact('absenMasuk', 'absenPulang', 'absensi_terakhir'));
+
+         $sudahAbsenMasuk = Absensi::where('karyawan_id', $karyawan->id)
+        ->whereDate('created_at', Carbon::today())
+        ->where('tipe', 'masuk')
+        ->exists();
+
+        $sudahAbsenPulang = Absensi::where('karyawan_id', $karyawan->id)
+        ->whereDate('created_at', Carbon::today())
+        ->where('tipe', 'pulang')
+        ->exists();
+
+        return view('karyawan.absensi', compact('absenMasuk', 'absenPulang', 'absensi_terakhir','sudahAbsenMasuk','sudahAbsenPulang'));
     }
     //baru di tmba
     function hitungJarak($lat1, $lon1, $lat2, $lon2)
@@ -102,7 +113,7 @@ class AbsensiController extends Controller
     }
  // BARU DI TAMBA
     $tanggalMasuk = Carbon::parse($karyawan->tanggal_masuk);
-$tanggalHariIni = Carbon::today();
+    $tanggalHariIni = Carbon::today();
 
 // Cek jika karyawan mencoba absen sebelum tanggal mulai kerja
 if ($tanggalHariIni->lt($tanggalMasuk)) {

@@ -14,9 +14,18 @@
                         <div class="flex-grow-1">
                             <h4>Masuk</h4>
                             <p class="mb-1"><strong id="jamMasuk">--:--</strong></p>
+
+                            @if (!$sudahAbsenMasuk)
                             <button class="btn btn-light btn-sm mt-2" id="btnAbsenMasuk" onclick="capturePhoto('masuk')">
                                 <i class="fas fa-camera"></i> Absen Masuk
                             </button>
+                        @else
+                            <button class="btn btn-light btn-sm mt-2 disabled" disabled>
+                                <i class="fas fa-check-circle"></i> Sudah absen masuk
+                            </button>
+                        @endif
+
+
                         </div>
                     </div>
                 </div>
@@ -32,14 +41,23 @@
                         <div class="flex-grow-1">
                             <h4>Pulang</h4>
                             <p class="mb-1"><strong id="jamPulang">--:--</strong></p>
+
+                            @if (!$sudahAbsenPulang)
                             <button class="btn btn-light btn-sm mt-2" id="btnAbsenPulang" onclick="capturePhoto('pulang')">
                                 <i class="fas fa-camera"></i> Absen Pulang
                             </button>
+                        @else
+                            <button class="btn btn-light btn-sm mt-2 disabled" disabled>
+                                <i class="fas fa-check-circle"></i> Sudah absen pulang
+                            </button>
+                        @endif
+
+
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+
 
         <!-- Video Kamera -->
         <div class="text-center my-4">
@@ -53,17 +71,18 @@
         </div>
 
         <!-- Form Kirim Absen -->
-        <form action="{{ route('karyawan.absensi.store') }}" method="POST" class="text-center">
-            @csrf
-            <input type="hidden" name="name" value="{{ Auth::user()->karyawan->name ?? Auth::user()->name }}">
-            <input type="hidden" name="tipe" id="tipe">
-            <input type="hidden" name="foto" id="foto">
-            <input type="hidden" name="lokasi" id="lokasi">
-            <input type="hidden" name="jam" id="jam">
-            <button type="submit" id="btnSubmit" style="display: none;" class="btn btn-success mt-3">
-                <i class="fas fa-paper-plane"></i> Kirim Absen
-            </button>
+        <form id="formAbsen" action="{{ route('karyawan.absensi.store') }}" method="POST" class="text-center">
+         @csrf
+        <input type="hidden" name="name" value="{{ Auth::user()->karyawan->name ?? Auth::user()->name }}">
+        <input type="hidden" name="tipe" id="tipe">
+        <input type="hidden" name="foto" id="foto">
+        <input type="hidden" name="lokasi" id="lokasi">
+        <input type="hidden" name="jam" id="jam">
+        <button type="submit" id="btnSubmit" style="display: none;" class="btn btn-success mt-3">
+        <i class="fas fa-paper-plane"></i> Kirim Absen
+        </button>
         </form>
+
 
         <!-- SweetAlert Notifikasi -->
         @if(session('success'))
@@ -84,67 +103,76 @@
 @push('scripts')
 <script>
     let stream = null;
-    let currentTipe = '';
+let currentTipe = '';
 
-    async function startCamera() {
-        if (!stream) {
-            try {
-                stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                document.getElementById('video').srcObject = stream;
-            } catch (err) {
-                Swal.fire('Gagal Akses Kamera', err.message, 'error');
-            }
+async function startCamera() {
+    if (!stream) {
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            document.getElementById('video').srcObject = stream;
+        } catch (err) {
+            Swal.fire('Gagal Akses Kamera', err.message, 'error');
         }
     }
+}
 
-    function capturePhoto(tipe) {
-        const hariIni = new Date().getDay(); // 1 = Senin
-        if (hariIni === 0) {
-            Swal.fire({
-                icon: 'info',
-                title: 'Hari Libur',
-                text: 'Hari ini adalah hari libur. Anda tidak bisa melakukan absensi.'
-            });
-            return;
-        }
-
-        currentTipe = tipe;
-        startCamera();
-        document.getElementById('btnAmbilFoto').style.display = 'inline-block';
-        document.getElementById('btnSubmit').style.display = 'inline-block';
-    }
-
-    function ambilFoto() {
-        const video = document.getElementById('video');
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        const dataURL = canvas.toDataURL('image/png');
-
-        document.getElementById('foto').value = dataURL;
-        document.getElementById('previewFoto').src = dataURL;
-        document.getElementById('previewFoto').style.display = 'block';
-        video.style.display = 'none';
-
-        document.getElementById('tipe').value = currentTipe;
-
-        navigator.geolocation.getCurrentPosition(function (position) {
-            const lokasi = position.coords.latitude + ',' + position.coords.longitude;
-            const jam = new Date().toLocaleTimeString('id-ID', { hour12: false });
-
-            document.getElementById('lokasi').value = lokasi;
-            document.getElementById('jam').value = jam;
-
-            if (currentTipe === 'masuk') {
-                document.getElementById('jamMasuk').innerText = jam;
-            } else {
-                document.getElementById('jamPulang').innerText = jam;
-            }
-
-        }, function (error) {
-            Swal.fire('Gagal Lokasi', error.message, 'error');
+function capturePhoto(tipe) {
+    const hariIni = new Date().getDay(); // 0 = Minggu
+    if (hariIni === 0) {
+        Swal.fire({
+            icon: 'info',
+            title: 'Hari Libur',
+            text: 'Hari ini adalah hari libur. Anda tidak bisa melakukan absensi.'
         });
+        return;
     }
+
+    currentTipe = tipe;
+    startCamera();
+    document.getElementById('btnAmbilFoto').style.display = 'inline-block';
+    document.getElementById('btnSubmit').style.display = 'inline-block';
+    document.getElementById('btnSubmit').disabled = false;
+}
+
+function ambilFoto() {
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const dataURL = canvas.toDataURL('image/png');
+
+    document.getElementById('foto').value = dataURL;
+    document.getElementById('previewFoto').src = dataURL;
+    document.getElementById('previewFoto').style.display = 'block';
+    video.style.display = 'none';
+
+    document.getElementById('tipe').value = currentTipe;
+
+    navigator.geolocation.getCurrentPosition(function (position) {
+        const lokasi = position.coords.latitude + ',' + position.coords.longitude;
+        const jam = new Date().toLocaleTimeString('id-ID', { hour12: false });
+
+        document.getElementById('lokasi').value = lokasi;
+        document.getElementById('jam').value = jam;
+
+        if (currentTipe === 'masuk') {
+            document.getElementById('jamMasuk').innerText = jam;
+        } else {
+            document.getElementById('jamPulang').innerText = jam;
+        }
+
+    }, function (error) {
+        Swal.fire('Gagal Lokasi', error.message, 'error');
+    });
+        }
+
+        // ✅ Nonaktifkan tombol submit setelah diklik
+        document.getElementById('formAbsen').addEventListener('submit', function () {
+            const btn = document.getElementById('btnSubmit');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
+        });
+
 </script>
     @endpush

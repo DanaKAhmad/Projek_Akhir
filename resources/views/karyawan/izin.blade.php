@@ -10,16 +10,19 @@
         <div class="card-body">
 
             {{-- SweetAlert Notifikasi --}}
-            <script>
-                window.onload = function () {
-                    @if(session('success'))
-                        Swal.fire('Berhasil', '{{ session('success') }}', 'success');
-                    @endif
-                    @if(session('error'))
-                        Swal.fire('Gagal', '{{ session('error') }}', 'error');
-                    @endif
-                }
-            </script>
+           @push('scripts')
+    @if(session('success'))
+    <script>
+        Swal.fire('Berhasil', '{{ session('success') }}', 'success');
+    </script>
+    @endif
+
+    @if(session('error'))
+    <script>
+        Swal.fire('Gagal', '{{ session('error') }}', 'error');
+    </script>
+    @endif
+@endpush
 
             {{-- Tombol toggle form --}}
             <button class="btn btn-sm btn-primary mb-3" onclick="formDataIzin()">

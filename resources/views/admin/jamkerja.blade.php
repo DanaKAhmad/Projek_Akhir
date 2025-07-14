@@ -10,13 +10,19 @@
 
      <div class="container" >
       
-            @if(session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
-            @endif
+           @push('scripts')
+    @if(session('success'))
+    <script>
+        Swal.fire('Berhasil', '{{ session('success') }}', 'success');
+    </script>
+    @endif
 
-            @if(session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
-            @endif
+    @if(session('error'))
+    <script>
+        Swal.fire('Gagal', '{{ session('error') }}', 'error');
+    </script>
+    @endif
+@endpush
       
             
         <form action="{{ route('admin.jamkerja.store')}}" method="POST">

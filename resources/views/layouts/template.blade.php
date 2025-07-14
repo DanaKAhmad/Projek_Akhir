@@ -224,9 +224,7 @@
     </li>
 
 </ul>
-                
-
-
+            
                         {{--}}
                         <li class="nav-item">
                             <a href="#" class="nav-link">
@@ -859,6 +857,7 @@
         sparkline3.render();
     </script>
     <!--end::Script-->
+    @stack('scripts')
 </body>
 <!--end::Body-->
 
