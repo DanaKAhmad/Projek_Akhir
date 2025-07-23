@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Izin;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class IzinController extends Controller
@@ -39,7 +40,7 @@ public function index()
         $request->validate([
             'tanggal_pengajuan' => 'required|date',
             'tanggal_izin' => 'required|date',
-            'tanggal_berakhir_izin' => 'required|date',
+            //'tanggal_berakhir_izin' => 'required|date',
             'keterangan' => 'required|string',
             'lampiran' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
     ]);
@@ -49,18 +50,20 @@ public function index()
     if ($request->hasFile('lampiran')) {
         $lampiranPath = $request->file('lampiran')->store('lampiran', 'public');
     }
+        $tanggal_izin = Carbon::parse($request->tanggal_izin);
+        $tanggal_berakhir_izin = $tanggal_izin->copy()->addDays(2); // 3 hari total: tgl_izin, +1, +2
 
         Izin::create([
-            'karyawan_id' => $karyawan->id,
-            'name' => $karyawan->name,
-            'tanggal_pengajuan' =>$request ->tanggal_pengajuan,
-            'tanggal_izin' =>$request ->tanggal_izin,
-            'tanggal_berakhir_izin' =>$request ->tanggal_berakhir_izin,
-            'keterangan' =>$request ->keterangan,
-            'status' => 'pending', //br
-            'lampiran' => $lampiranPath,
-            
-        ]);
+        'karyawan_id' => $karyawan->id,
+        'name' => $karyawan->name,
+        'tanggal_pengajuan' => $request->tanggal_pengajuan,
+        'tanggal_izin' => $request->tanggal_izin,
+        'tanggal_berakhir_izin' => $tanggal_berakhir_izin->format('Y-m-d'), // otomatis
+        'keterangan' => $request->keterangan,
+        'status' => 'pending',
+        'lampiran' => $lampiranPath,
+    ]);
+
         return redirect()->back()->with('success','Data berhasil di simpan.');
 
     }

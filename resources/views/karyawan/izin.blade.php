@@ -9,21 +9,6 @@
         </div>
         <div class="card-body">
 
-            {{-- SweetAlert Notifikasi --}}
-           @push('scripts')
-    @if(session('success'))
-    <script>
-        Swal.fire('Berhasil', '{{ session('success') }}', 'success');
-    </script>
-    @endif
-
-    @if(session('error'))
-    <script>
-        Swal.fire('Gagal', '{{ session('error') }}', 'error');
-    </script>
-    @endif
-@endpush
-
             {{-- Tombol toggle form --}}
             <button class="btn btn-sm btn-primary mb-3" onclick="formDataIzin()">
                 <i class="fas fa-plus-circle me-1"></i> Tambah Data
@@ -44,14 +29,14 @@
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="tanggal_berakhir_izin">Tanggal Berakhir Izin</label>
-                            <input type="date" class="form-control" name="tanggal_berakhir_izin" value="{{ old('tanggal_berakhir_izin') }}" required>
+                            <input type="date" class="form-control" name="tanggal_berakhir_izin" id="tanggal_berakhir_izin" readonly>
                         </div>
                         <div class="col-md-12 mb-3">
                             <label for="keterangan">Keterangan</label>
                             <input type="text" class="form-control" name="keterangan" value="{{ old('keterangan') }}" required>
                         </div>
                         <div class="col-md-12 mb-3">
-                            <label for="lampiran">Lampiran (Opsional)</label>
+                            <label for="lampiran">Lampiran (Surat Keterangan Dokter)</label>
                             <input type="file" class="form-control" name="lampiran" accept=".pdf,.jpg,.jpeg,.png">
                         </div>
                         <div class="col-12">
@@ -122,11 +107,98 @@
     </div>
 </div>
 
-{{-- Script Toggle Form --}}
+{{-- Script Toggle Form dan Sinkronisasi Tanggal --}}
+@push('scripts')
 <script>
     function formDataIzin() {
         const form = document.getElementById('formIzin');
         form.style.display = form.style.display === 'none' ? 'block' : 'none';
     }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const inputPengajuan = document.querySelector('input[name="tanggal_pengajuan"]');
+        const inputIzin = document.querySelector('input[name="tanggal_izin"]');
+        const inputBerakhir = document.querySelector('input[name="tanggal_berakhir_izin"]');
+        const inputLampiran = document.querySelector('input[name="lampiran"]');
+        const btnSubmit = document.querySelector('#formIzin button[type="submit"]');
+
+        // Otomatis tanggal izin dan berakhir izin
+        inputPengajuan.addEventListener('change', function () {
+            inputIzin.value = inputPengajuan.value;
+
+            const tgl = new Date(inputPengajuan.value);
+            tgl.setDate(tgl.getDate() + 2);
+            inputBerakhir.value = tgl.toISOString().split('T')[0];
+        });
+
+        // Validasi lampiran wajib sebelum submit
+        btnSubmit.addEventListener('click', function (e) {
+            if (!inputLampiran.value) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Lampiran Wajib',
+                    text: 'Silakan unggah file lampiran terlebih dahulu.'
+                });
+            }
+        });
+    });
 </script>
+@push('scripts')
+    {{-- SweetAlert Notifikasi --}}
+    @if(session('success'))
+    <script>
+        Swal.fire('Berhasil', '{{ session('success') }}', 'success');
+    </script>
+    @endif
+
+    @if(session('error'))
+    <script>
+        Swal.fire('Gagal', '{{ session('error') }}', 'error');
+    </script>
+    @endif
+
+    {{-- Script Toggle & Validasi --}}
+    <script>
+        function formDataIzin() {
+            const form = document.getElementById('formIzin');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const inputPengajuan = document.querySelector('input[name="tanggal_pengajuan"]');
+            const inputIzin = document.querySelector('input[name="tanggal_izin"]');
+            const inputBerakhir = document.querySelector('input[name="tanggal_berakhir_izin"]');
+            const inputLampiran = document.querySelector('input[name="lampiran"]');
+            const btnSubmit = document.querySelector('#formIzin button[type="submit"]');
+
+            // Otomatis tanggal izin & tanggal berakhir = 3 hari total
+            inputPengajuan.addEventListener('change', function () {
+                inputIzin.value = inputPengajuan.value;
+
+                const tgl = new Date(inputPengajuan.value);
+                tgl.setDate(tgl.getDate() + 2); // 3 hari total: tgl_pengajuan, +1, +2
+                inputBerakhir.value = tgl.toISOString().split('T')[0];
+            });
+
+            // Validasi lampiran wajib
+            btnSubmit.addEventListener('click', function (e) {
+                if (!inputLampiran.value) {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Lampiran Wajib',
+                        text: 'Silakan unggah file lampiran terlebih dahulu.'
+                    });
+                }
+            });
+        });
+    </script>
+@endpush
+
+
+@endpush
+
+
+
 @endsection

@@ -34,12 +34,20 @@
             <x-input-error :messages="$errors->get('jenis_kelamin')" class="mt-2" />
         </div>
 
-        <!-- Tanggal Lahir -->
-        <div class="mt-4">
-            <x-input-label for="tanggal_lahir" :value="__('Tanggal Lahir')" />
-            <x-text-input id="tanggal_lahir" class="block mt-1 w-full" type="date" name="tanggal_lahir" :value="old('tanggal_lahir')" required />
-            <x-input-error :messages="$errors->get('tanggal_lahir')" class="mt-2" />
-        </div>
+             @php
+                $today = now();
+                $maxTanggal = \Carbon\Carbon::now()->subYears(17)->format('Y-m-d');
+                $minTanggal = \Carbon\Carbon::now()->subYears(30)->format('Y-m-d');
+            @endphp
+
+            <!-- Tanggal Lahir -->
+            <div class="mt-4">
+                <x-input-label for="tanggal_lahir" :value="__('Tanggal Lahir')" />
+                <x-text-input id="tanggal_lahir" class="block mt-1 w-full" type="date"
+                    name="tanggal_lahir" :value="old('tanggal_lahir')"
+                    min="{{ $minTanggal }}" max="{{ $maxTanggal }}" required />
+                <x-input-error :messages="$errors->get('tanggal_lahir')" class="mt-2" />
+            </div>
 
         <!-- Alamat -->
         <div class="mt-4">

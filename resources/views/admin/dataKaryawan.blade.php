@@ -59,10 +59,19 @@
                         <option value="Perempuan">Perempuan</option>
                     </select>
                 </div>
+                @php
+                    use Carbon\Carbon;
+                    $today = Carbon::now();
+                    $minTanggalLahir = $today->copy()->subYears(30)->format('Y-m-d'); // Maksimal 30 tahun
+                    $maxTanggalLahir = $today->copy()->subYears(17)->format('Y-m-d'); // Minimal 17 tahun
+                @endphp
+
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Tanggal Lahir:</label>
-                    <input type="date" name="tanggal_lahir" class="form-control" required>
+                    <input type="date" name="tanggal_lahir" class="form-control"
+                        min="{{ $minTanggalLahir }}" max="{{ $maxTanggalLahir }}" required>
                 </div>
+
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Tanggal Masuk Kerja:</label>
                     <input type="date" name="tanggal_masuk" class="form-control" required>
@@ -107,8 +116,15 @@
                         <td>{{ $karyawan->user->tanggal_lahir ?? '-' }}</td>
                         <td>{{ $karyawan->user->alamat ?? '-' }}</td>
                         <td>{{ $karyawan->tanggal_masuk }}</td>
-                        <td>{{ $karyawan->status }}</td>
-
+                        <td class="text-center">
+                            @if($karyawan->status === 'aktif')
+                                <span class="badge bg-success">Aktif</span>
+                            @elseif($karyawan->status === 'pending')
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            @else
+                                <span class="badge bg-secondary">{{ ucfirst($karyawan->status) }}</span>
+                            @endif
+                            </td>
                         <td>
                             <a href="{{ route('admin.dataKaryawan.edit', $karyawan->id) }}" class="btn btn-sm btn-warning">Edit</a>
 

@@ -79,20 +79,27 @@
             @endfor
 
             {{-- Tanggal dan status --}}
-            @for ($day = 1; $day <= $daysInMonth; $day++)
+             @for ($day = 1; $day <= $daysInMonth; $day++)
                 @php
-                    $tanggal = \Carbon\Carbon::parse($bulan)->setDay($day)->format('Y-m-d');
+                    $tanggalObj = \Carbon\Carbon::parse($bulan)->setDay($day);
+                    $tanggal = $tanggalObj->format('Y-m-d');
                     $status = $kalender[$tanggal] ?? null;
-                    $warna = match($status) {
-                        'Hadir' => 'bg-success text-white',
-                        'Alpha' => 'bg-danger text-white',
-                        default => 'bg-light text-dark'
+
+                    $isSunday = $tanggalObj->isSunday();
+
+                    $warna = match(true) {
+                        $status === 'Hadir' => 'bg-success text-white',
+                        $status === 'Alpha' => 'bg-danger text-white',
+                        $isSunday => 'bg-secondary text-white', // warna untuk hari Minggu / libur
+                        default => 'bg-light text-dark',
                     };
                 @endphp
+
                 <div class="rounded p-2 text-center {{ $warna }}">
                     {{ $day }}
                 </div>
             @endfor
+
         </div>
 
         <div class="mt-4">
